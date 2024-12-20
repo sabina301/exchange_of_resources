@@ -8,6 +8,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/sabina301/exchange_of_resources v0.0.0-20241220041257-c44d351b695c // indirect
+	github.com/sabina301/exchange_of_resources/public_api_errors v0.0.0-20241220111953-77dba1a1ffe9 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	golang.org/x/crypto v0.31.0 // indirect

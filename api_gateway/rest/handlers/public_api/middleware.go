@@ -5,12 +5,6 @@ import (
 	"github.com/sabina301/exchange_of_resources/public_api_errors/errors"
 )
 
-// func SetPublicApiContext(next echo.HandlerFunc) echo.HandlerFunc {
-//	return func(c echo.Context) error {
-//		ctx := context.WithValue(c.Request().Context(), echo.HeaderXRequestID, )
-//	}
-// }
-
 func HandlePublicApiError(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		err := next(c)
