@@ -28,6 +28,10 @@ func newBase(t, message string) BaseError {
 	return BaseError{t, message}
 }
 
+func (err BaseError) Error() string {
+	return err.Message
+}
+
 type InternalError struct {
 	BaseError
 }
