@@ -3,7 +3,7 @@ package errors
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sabina301/public_api_errors/templates"
+	"github.com/sabina301/exchange_of_resources/public_api_errors/templates"
 	"reflect"
 )
 
