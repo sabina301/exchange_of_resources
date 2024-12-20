@@ -1,5 +1,5 @@
 {
   "InternalError": "internal error",
-  "AuthenticationFailed": "failed to authenticate user \"{{.User}}\"",
+  "AuthenticationFailed": "failed to authenticate user \"{{.Username}}\"",
   "MalformedBody": "malformed JSON body"
 }
