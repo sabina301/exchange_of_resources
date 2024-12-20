@@ -31,10 +31,6 @@
 # Coverage files
 *.cov
 
-# Ignore the Go module files
-go.sum
-go.mod
-
 # OS generated files
 .DS_Store
 Thumbs.db
