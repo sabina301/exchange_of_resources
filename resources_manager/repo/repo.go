@@ -1,44 +1,79 @@
 package repo
 
 import (
-	"context"
 	"database/sql"
-	"fmt"
-	"github.com/sabina301/exchange_of_resources/auth/db"
-	"github.com/sabina301/exchange_of_resources/auth/models"
+	"log"
+	"time"
 )
 
-func GetUserByUsername(username string) (*models.User, error) {
-	user := &models.User{}
-	query := "SELECT id, username, password FROM users WHERE username = $1"
-	err := db.Db.QueryRow(query, username).Scan(&user.ID, &user.Username, &user.Password)
+type ResourceRepository interface {
+	GetResourceByID(id int) (*Resource, error)
+	GetAllResourcesBySubjectID(subjectID int) ([]Resource, error)
+	CreateResource(resource *Resource) error
+	DeleteResourceByID(id int) error
+}
+
+type resourceRepository struct {
+	db *sql.DB
+}
+
+func NewResourceRepository(db *sql.DB) *resourceRepository {
+	return &resourceRepository{db: db}
+}
+
+func (r *resourceRepository) GetResourceByID(id int) (*Resource, error) {
+	resource := &Resource{}
+	query := "SELECT id, name, blob, upload_date, author_name, group_number, subject_id FROM resources WHERE id = $1"
+	err := r.db.QueryRow(query, id).Scan(&resource.ID, &resource.Name, &resource.Blob, &resource.UploadDate, &resource.AuthorName, &resource.GroupNumber, &resource.SubjectID)
 	if err != nil {
 		return nil, err
 	}
-	return user, nil
+	return resource, nil
 }
 
-func CreateUser(user *models.User) error {
-	query := "INSERT INTO users (username, password, role) VALUES ($1, $2, $3)"
-	_, err := db.Db.Exec(query, user.Username, user.Password, user.Role)
+func (r *resourceRepository) GetAllResourcesBySubjectID(subjectID int) ([]Resource, error) {
+	resources := []Resource{}
+	query := "SELECT id, name, blob, upload_date, author_name, group_number, subject_id FROM resources WHERE subject_id = $1"
+	rows, err := r.db.Query(query, subjectID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		resource := Resource{}
+		err := rows.Scan(&resource.ID, &resource.Name, &resource.Blob, &resource.UploadDate, &resource.AuthorName, &resource.GroupNumber, &resource.SubjectID)
+		if err != nil {
+			return nil, err
+		}
+		resources = append(resources, resource)
+	}
+
+	return resources, nil
+}
+
+func (r *resourceRepository) CreateResource(resource *Resource) error {
+	log.Println(resource.SubjectID)
+	query := "INSERT INTO resources (name, blob, author_name, group_number, subject_id) VALUES ($1, $2, $3, $4, $5) RETURNING id, upload_date"
+	err := r.db.QueryRow(query, resource.Name, resource.Blob, resource.AuthorName, resource.GroupNumber, resource.SubjectID).Scan(&resource.ID, &resource.UploadDate)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *resourceRepository) DeleteResourceByID(id int) error {
+	query := "DELETE FROM resources WHERE id = $1"
+	_, err := r.db.Exec(query, id)
 	return err
 }
 
-func FindUserByUsername(username string) (*models.User, error) {
-	query := "SELECT username, role FROM users WHERE username = $1"
-	row := db.Db.QueryRowContext(context.Background(), query, username)
-
-	var user models.User
-	var role string
-
-	if err := row.Scan(&user.Username, &role); err != nil {
-		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("user not found")
-		}
-		return nil, err
-	}
-
-	user.Role = role
-
-	return &user, nil
+type Resource struct {
+	ID          int       `json:"id"`
+	Name        string    `json:"name"`
+	Blob        []byte    `json:"blob"`
+	UploadDate  time.Time `json:"upload_date"`
+	AuthorName  string    `json:"author_name"`
+	GroupNumber string    `json:"group_number"`
+	SubjectID   int       `json:"subject_id"`
 }

@@ -3,13 +3,13 @@ package rest
 import (
 	"context"
 	"github.com/labstack/echo/v4"
+	"github.com/sabina301/exchange_of_resources/resources_manager/repo"
 )
 
 const (
-	serviceVersion  = "v1"
-	servicePrefix   = "/gateway/" + serviceVersion
-	publicApiPrefix = "/api/" + serviceVersion
-	XAuthUser       = "X-Auth-User"
+	serviceVersion    = "v1"
+	internalApiPrefix = "/int/" + serviceVersion
+	XAuthUser         = "X-Auth-User"
 )
 
 var (
@@ -26,12 +26,16 @@ func startServer(e *echo.Echo, port string) {
 }
 
 type ServerImpl struct {
-	Port string
+	Port               string
+	Repo               repo.ResourceRepository
+	ResourceController *ResourceController
 }
 
-func NewServer(port string) Server {
+func NewServer(port string, repo repo.ResourceRepository, controller *ResourceController) Server {
 	return &ServerImpl{
-		Port: port,
+		Port:               port,
+		Repo:               repo,
+		ResourceController: controller,
 	}
 }
 
@@ -61,7 +65,7 @@ func GetContextWithParameters(parent context.Context, c echo.Context) context.Co
 func (s *ServerImpl) Start() {
 	e := echo.New()
 	e.Use(ContextMiddleware)
-	registerPublicApi(e)
+	s.registerPublicApi(e)
 	ServerApi = e
 	StartServerFunc(e, s.Port)
 }

@@ -2,12 +2,13 @@ package rest
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/sabina301/exchange_of_resources/auth/rest/public_api"
 )
 
-func registerPublicApi(e *echo.Echo) {
-	api := e.Group(publicApiPrefix)
-	auth := api.Group("/auth")
-	auth.POST("/login", public_api.Login)
-	auth.POST("/register", public_api.Register)
+func (s *ServerImpl) registerPublicApi(e *echo.Echo) {
+	api := e.Group(internalApiPrefix)
+	resources := api.Group("/resources")
+	resources.GET("/:resId", s.ResourceController.GetResource)
+	resources.GET("/:subjId/all", s.ResourceController.GetAllResources)
+	resources.POST("/:subjId", s.ResourceController.CreateResource)
+	resources.DELETE("/:resId", s.ResourceController.DeleteResource)
 }
