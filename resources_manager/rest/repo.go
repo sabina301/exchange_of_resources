@@ -1,9 +1,8 @@
-package repo
+package rest
 
 import (
 	"database/sql"
 	"log"
-	"time"
 )
 
 type ResourceRepository interface {
@@ -66,14 +65,4 @@ func (r *resourceRepository) DeleteResourceByID(id int) error {
 	query := "DELETE FROM resources WHERE id = $1"
 	_, err := r.db.Exec(query, id)
 	return err
-}
-
-type Resource struct {
-	ID          int       `json:"id"`
-	Name        string    `json:"name"`
-	Blob        []byte    `json:"blob"`
-	UploadDate  time.Time `json:"upload_date"`
-	AuthorName  string    `json:"author_name"`
-	GroupNumber string    `json:"group_number"`
-	SubjectID   int       `json:"subject_id"`
 }

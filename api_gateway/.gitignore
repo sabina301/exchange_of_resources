@@ -5,18 +5,14 @@
 *.o
 *.a
 
-# Binary
-/myapp
 
-# Dependency directories (remove the comment if you are using modules)
-# vendor/
+vendor/
 
 # Test binary, build and cached files
 *.test
 *.cache
 *.prof
 
-# IDE and editor directories
 .vscode/
 .idea/
 *.sublime-project
@@ -25,17 +21,10 @@
 *.tmp
 *.log
 
-# Environment variables file
 .env
 
-# Coverage files
 *.cov
 
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# Additional files
 *.bak
 *.tmp
 *.orig

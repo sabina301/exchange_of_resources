@@ -1,0 +1,56 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: your_user
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: your_database
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  auth:
+    build:
+      context: ./auth
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://sabins301:1@postgres:5432/auth
+    ports:
+      - "8001:8000"
+  api_gateway:
+    build:
+      context: ./api_gateway
+    restart: always
+    depends_on:
+      - auth
+      - resources
+      - subjects
+    ports:
+      - "8080:8000"
+  resources:
+    build:
+      context: ./resources
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://sabins301:1@postgres:5432/resources
+    ports:
+      - "8002:8000"
+
+  subjects:
+    build:
+      context: ./subjects
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://sabins301:1@postgres:5432/subjects
+    ports:
+      - "8003:8000"
+volumes:
+  postgres_data:
