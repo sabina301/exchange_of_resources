@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources</title>
+    <link rel="stylesheet" href="css/resources.css">
+</head>
+<body>
+    <header>
+        <h1>Subject Resources</h1>
+        <button onclick="goToAccount()">My Account</button>
+    </header>
+    <main>
+        <h2 id="subjectName">Subject Name</h2>
+
+        <section id="lectures">
+            <h3>Lectures</h3>
+            <div id="lecturesList"></div>
+            <input type="file" id="lecturesUpload" style="display:none;" onchange="uploadFile('lectures')">
+        </section>
+
+        <section id="practices">
+            <h3>Practices</h3>
+            <div id="practicesList"></div>
+            <input type="file" id="practicesUpload" style="display:none;" onchange="uploadFile('practices')">
+        </section>
+
+        <section id="examMaterials">
+            <h3>All for Exam</h3>
+            <div id="examMaterialsList"></div>
+            <input type="file" id="examMaterialsUpload" style="display:none;" onchange="uploadFile('examMaterials')">
+        </section>
+
+        <section id="methodical">
+            <h3>Methodical Materials</h3>
+            <div id="methodicalList"></div>
+            <input type="file" id="methodicalsUpload" style="display:none;" onchange="uploadFile('methodical')">
+        </section>
+
+        <section id="practicalWorks">
+            <h3>Practical Works Upload</h3>
+            <div id="practicalWorksList"></div>
+            <input type="file" id="practicalWorksUpload" style="display:none;" onchange="uploadFile('practicalWorks')">
+        </section>
+    </main>
+    <script src="js/resources.js"></script>
+</body>
+</html>

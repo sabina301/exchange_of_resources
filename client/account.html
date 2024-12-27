@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Account</title>
+    <link rel="stylesheet" href="css/account.css">
+</head>
+<body>
+    <header>
+        <button onclick="goBack()">Back</button>
+        <h1>User Account</h1>
+    </header>
+    <main>
+        <div class="account-info">
+            <h2>Account Information</h2>
+            <p><strong>Name:</strong> <span id="userName">John Doe</span></p>
+            <p><strong>Study Group:</strong> <span id="studyGroup">Group A</span></p>
+        </div>
+        <div class="subjects">
+            <h2>Subjects</h2>
+            <ul id="subjectList">
+                <!-- Список предметов будет заполняться динамически -->
+            </ul>
+        </div>
+        <div class="logout">
+            <button onclick="logout()">Logout</button>
+        </div>    </main>
+    <script src="js/account.js"></script>
+</body>
+</html>
